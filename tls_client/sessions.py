@@ -291,6 +291,9 @@ class Session:
             url = f"{url}?{urllib.parse.urlencode(params, doseq=True)}"
 
         # --- Request Body ---------------------------------------------------------------------------------------------
+        # Fix nested dictionaries
+        if data != None:
+            data = {key: dumps(val) if isinstance(val, dict) else val for key, val in data.items()}
         # Prepare request body - build request body
         # Data has priority. JSON is only used if data is None.
         if data is None and json is not None:
