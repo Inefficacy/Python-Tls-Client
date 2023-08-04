@@ -32,10 +32,10 @@ class Session:
         priority_frames: Optional[list] = None,
         header_order: Optional[list] = None,  # Optional[list[str]]
         header_priority: Optional[dict] = None,  # Optional[list[str]]
-        random_tls_extension_order: Optional = False,
-        force_http1: Optional = False,
-        catch_panics: Optional = False,
-        debug: Optional = False
+        random_tls_extension_order: Optional[bool] = False,
+        force_http1: Optional[bool] = False,
+        catch_panics: Optional[bool] = False,
+        debug: Optional[bool] = False
     ) -> None:
         self._session_id = str(uuid.uuid4())
         # --- Standard Settings ----------------------------------------------------------------------------------------
@@ -65,7 +65,10 @@ class Session:
         self.cookies = cookiejar_from_dict({})
 
         # Timeout
-        self.timeout_seconds = 30
+        self.timeout = 30
+
+        # Verify
+        self.verify = True
 
         # --- Advanced Settings ----------------------------------------------------------------------------------------
 
@@ -281,8 +284,8 @@ class Session:
         cookies: Optional[dict] = None,  # Optional[dict[str, str]]
         json: Optional[dict] = None,  # Optional[dict]
         allow_redirects: Optional[bool] = False,
-        insecure_skip_verify: Optional[bool] = False,
-        timeout_seconds: Optional[int] = None,
+        verify: Optional[bool] = None,
+        timeout: Optional[int] = None,
         proxy: Optional[dict] = None  # Optional[dict[str, str]]
     ):
         # --- URL ------------------------------------------------------------------------------------------------------
@@ -351,7 +354,10 @@ class Session:
         # --- Timeout --------------------------------------------------------------------------------------------------
         # maximum time to wait
 
-        timeout_seconds = timeout_seconds or self.timeout_seconds
+        timeout = timeout or self.timeout
+        
+        # --- Verify ---------------------------------------------------------------------------------------------------
+        verify = verify or self.verify
         
         # --- Request --------------------------------------------------------------------------------------------------
         is_byte_request = isinstance(request_body, (bytes, bytearray))
@@ -363,7 +369,7 @@ class Session:
             "catchPanics": self.catch_panics,
             "headers": dict(headers),
             "headerOrder": self.header_order,
-            "insecureSkipVerify": insecure_skip_verify,
+            "insecureSkipVerify": not verify,
             "isByteRequest": is_byte_request,
             "additionalDecode": self.additional_decode,
             "proxyUrl": proxy,
@@ -371,7 +377,7 @@ class Session:
             "requestMethod": method,
             "requestBody": base64.b64encode(request_body).decode() if is_byte_request else request_body,
             "requestCookies": request_cookies,
-            "timeoutSeconds": timeout_seconds,
+            "timeoutSeconds": timeout,
         }
         if self.client_identifier is None:
             request_payload["customTlsClient"] = {
