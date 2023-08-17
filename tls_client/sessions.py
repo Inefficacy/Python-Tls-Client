@@ -274,7 +274,7 @@ class Session:
         # debugging
         self.debug = debug
 
-    def execute_request(
+    def request(
         self,
         method: str,
         url: str,
@@ -428,7 +428,7 @@ class Session:
         **kwargs: Any
     ):
         """Sends a GET request"""
-        return self.execute_request(method="GET", url=url, **kwargs)
+        return self.request(method="GET", url=url, **kwargs)
 
     def options(
         self,
@@ -436,7 +436,7 @@ class Session:
         **kwargs: Any
     ):
         """Sends a OPTIONS request"""
-        return self.execute_request(method="OPTIONS", url=url, **kwargs)
+        return self.request(method="OPTIONS", url=url, **kwargs)
 
     def head(
         self,
@@ -444,7 +444,7 @@ class Session:
         **kwargs: Any
     ):
         """Sends a HEAD request"""
-        return self.execute_request(method="HEAD", url=url, **kwargs)
+        return self.request(method="HEAD", url=url, **kwargs)
 
     def post(
         self,
@@ -454,7 +454,7 @@ class Session:
         **kwargs: Any
     ):
         """Sends a POST request"""
-        return self.execute_request(method="POST", url=url, data=data, json=json, **kwargs)
+        return self.request(method="POST", url=url, data=data, json=json, **kwargs)
 
     def put(
         self,
@@ -464,7 +464,7 @@ class Session:
         **kwargs: Any
     ):
         """Sends a PUT request"""
-        return self.execute_request(method="PUT", url=url, data=data, json=json, **kwargs)
+        return self.request(method="PUT", url=url, data=data, json=json, **kwargs)
 
     def patch(
         self,
@@ -474,7 +474,7 @@ class Session:
         **kwargs: Any
     ):
         """Sends a PATCH request"""
-        return self.execute_request(method="PATCH", url=url, data=data, json=json, **kwargs)
+        return self.request(method="PATCH", url=url, data=data, json=json, **kwargs)
 
     def delete(
         self,
@@ -482,4 +482,4 @@ class Session:
         **kwargs: Any
     ):
         """Sends a DELETE request"""
-        return self.execute_request(method="DELETE", url=url, **kwargs)
+        return self.request(method="DELETE", url=url, **kwargs)
