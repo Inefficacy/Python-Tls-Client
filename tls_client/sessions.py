@@ -286,7 +286,7 @@ class Session:
         allow_redirects: Optional[bool] = False,
         verify: Optional[bool] = None,
         timeout: Optional[int] = None,
-        proxy: Optional[dict] = None  # Optional[dict[str, str]]
+        proxies: Optional[dict] = None  # Optional[dict[str, str]]
     ):
         # --- URL ------------------------------------------------------------------------------------------------------
         # Prepare URL - add params to url
@@ -342,14 +342,14 @@ class Session:
         ]
 
         # --- Proxy ----------------------------------------------------------------------------------------------------
-        proxy = proxy or self.proxies
+        proxies = proxies or self.proxies
         
-        if type(proxy) is dict and "http" in proxy:
-            proxy = proxy["http"]
-        elif type(proxy) is str:
-            proxy = proxy
+        if type(proxies) is dict and "http" in proxies:
+            proxies = proxies["http"]
+        elif type(proxies) is str:
+            proxies = proxies
         else:
-            proxy = ""
+            proxies = ""
 
         # --- Timeout --------------------------------------------------------------------------------------------------
         # maximum time to wait
@@ -372,7 +372,7 @@ class Session:
             "insecureSkipVerify": not verify,
             "isByteRequest": is_byte_request,
             "additionalDecode": self.additional_decode,
-            "proxyUrl": proxy,
+            "proxyUrl": proxies,
             "requestUrl": url,
             "requestMethod": method,
             "requestBody": base64.b64encode(request_body).decode() if is_byte_request else request_body,
